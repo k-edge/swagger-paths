@@ -1,0 +1,26 @@
+{
+  "name": "swagger-paths",
+  "version": "0.0.1",
+  "description": "Match paths from a swagger file",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": {
+    "name": "Pier Fumagalli",
+    "email": "pier.fumagalli@koerber.digital"
+  },
+  "homepage": "https://github.com/KoerberDigitalDevTeam/swagger-paths#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KoerberDigitalDevTeam/swagger-paths.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KoerberDigitalDevTeam/swagger-paths/issues"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-mocha": "^5.0.0"
+  }
+}
