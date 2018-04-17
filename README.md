@@ -36,6 +36,7 @@ uses a simple syntax augumenting Swagger's own:
 * `{normal}`: A normal parameter, not matching any sub-resource.
 * `{/optional}`: An optional path parameter, indicating it might be omitted.
 * `{+wildcard}`: A wildcard parameter, matching all sub resources.
+* `{fixed:value}`: A fixed value parameter, matching a specified value.
 
 For example, in case of normal parameters (e.g. `/foo/{bar}`):
 
@@ -70,11 +71,29 @@ paths.lookup('/foo/baz');     // returns { params: { '+bar': 'baz' }, value: '..
 paths.lookup('/foo/baz/qux'); // returns { params: { '+bar: 'baz/qux' }, value: '...' }
 ```
 
+Fixed-value parameters, finally, capture a single, specific value as a path
+parameter:
+
+```javascript
+const Paths = require('.');
+
+const paths = new Paths({ '/{foo:one}/{bar}': 111,
+                          '/{foo:two}/{bar}': 222 });
+
+paths.lookup('/one/baz');     // returns { params: { foo: 'one', bar: 'baz' }, value: 111 }
+paths.lookup('/two/baz');     // returns { params: { foo: 'two', bar: 'baz' }, value: 222 }
+paths.lookup('/three/baz');   // returns null
+```
+
 #### NOTE on Parameter Names
 
 In order to have swagger files *properly* validating, parameter names with
 modifiers (e.g. `{/optional]}` or `{+wildcard}`) will be returned *unchanged*,
 (the modifier *WILL* be included in the parameter name).
+
+Fixed value parameters (e.g. `{fixed:value}`), on the other hand, will not
+include the fixed value part, and will therefore generate warnings in the
+Swagger editor.
 
 License
 -------
