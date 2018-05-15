@@ -51,11 +51,11 @@ describe('Basic tests', function() {
   });
 
   it('should match our root resource', function() {
-    deepEqual(paths.lookup('/'), { params: {}, value: 'root resource' });
+    deepEqual(paths.lookup('/'), { params: {}, value: 'root resource', pattern: '/' });
   });
 
   it('should match the empty string to our root resource', function() {
-    deepEqual(paths.lookup(''), { params: {}, value: 'root resource' });
+    deepEqual(paths.lookup(''), { params: {}, value: 'root resource', pattern: '/' });
   });
 
 });
@@ -69,15 +69,15 @@ describe('Extended tests', function() {
   });
 
   const expectations = {
-    "/x"   : { params: {}, value: 'fixed' },
-    "/x/"  : null,
-    "/x/w" : null,
-    "/y"   : null,
-    "/y/"  : { params: {},            value: 'required' },
-    "/y/w" : { params: { p: 'w' },    value: 'required' },
-    "/z"   : { params: {},            value: 'optional' },
-    "/z/"  : { params: {},            value: 'optional' },
-    "/z/w" : { params: { '/p': 'w' }, value: 'optional' },
+    '/x'   : { params: {}, value: 'fixed', pattern: '/x' },
+    '/x/'  : null,
+    '/x/w' : null,
+    '/y'   : null,
+    '/y/'  : { params: {},            value: 'required', pattern: '/y/{p}' },
+    '/y/w' : { params: { p: 'w' },    value: 'required', pattern: '/y/{p}' },
+    '/z'   : { params: {},            value: 'optional', pattern: '/z{/p}' },
+    '/z/'  : { params: {},            value: 'optional', pattern: '/z{/p}' },
+    '/z/w' : { params: { '/p': 'w' }, value: 'optional', pattern: '/z{/p}' }
   };
 
   Object.keys(expectations).forEach(function(key) {
@@ -131,18 +131,21 @@ describe('Set of lookups', function() {
   var expectations = {
     '/en.wikipedia.org/v1/page': {
       value: '/page',
+      pattern: '/{domain:en.wikipedia.org}/v1/page',
       params: {
         domain: 'en.wikipedia.org'
       }
     },
     '/de.wikipedia.org/v1/page/': {
       value: '/page/',
+      pattern: '/{domain:de.wikipedia.org}/v1/page/',
       params: {
         domain: 'de.wikipedia.org'
       }
     },
     '/fr.wikipedia.org/v1/page/Foo': {
       value: '/page/{title}',
+      pattern: '/{domain:fr.wikipedia.org}/v1/page/{title}',
       params: {
         domain: 'fr.wikipedia.org',
         title: 'Foo'
@@ -153,6 +156,7 @@ describe('Set of lookups', function() {
 
     '/es.wikipedia.org/v1/page/Foo/': {
       value: '/page/{title}/',
+      pattern: '/{domain:es.wikipedia.org}/v1/page/{title}/',
       params: {
         domain: 'es.wikipedia.org',
         title: 'Foo'
@@ -160,6 +164,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/page/Foo/html': {
       value: '/page/{title}/html',
+      pattern: '/{domain:en.wikipedia.org}/v1/page/{title}/html',
       params: {
         domain: 'en.wikipedia.org',
         title: 'Foo'
@@ -167,6 +172,7 @@ describe('Set of lookups', function() {
     },
     '/de.wikipedia.org/v1/transform/html/to/wikitext': {
       value: '/transform/html/to/{format}',
+      pattern: '/{domain:de.wikipedia.org}/v1/transform/html/to/{format}',
       params: {
         domain: 'de.wikipedia.org',
         format: 'wikitext'
@@ -177,6 +183,7 @@ describe('Set of lookups', function() {
 
     '/fr.wikipedia.org/v1/transform/': {
       value: '/transform/',
+      pattern: '/{domain:fr.wikipedia.org}/v1/transform/',
       params: {
         domain: 'fr.wikipedia.org'
       }
@@ -186,6 +193,7 @@ describe('Set of lookups', function() {
 
     '/es.wikipedia.org/v1/transform/': {
       value: '/transform/',
+      pattern: '/{domain:es.wikipedia.org}/v1/transform/',
       params: {
         domain: 'es.wikipedia.org'
       }
@@ -195,24 +203,28 @@ describe('Set of lookups', function() {
 
     '/en.wikipedia.org/v1/double/': {
       value: '/double/',
+      pattern: '/{domain:en.wikipedia.org}/v1/double/',
       params: {
         domain: 'en.wikipedia.org'
       }
     },
     '/de.wikipedia.org/v1/double//': {
       value: '/double//',
+      pattern: '/{domain:de.wikipedia.org}/v1/double//',
       params: {
         domain: 'de.wikipedia.org'
       }
     },
     '/fr.wikipedia.org/v1/double//slash': {
       value: '/double//slash',
+      pattern: '/{domain:fr.wikipedia.org}/v1/double//slash',
       params: {
         domain: 'fr.wikipedia.org'
       }
     },
     '/es.wikipedia.org/v1/some/really/long/path': {
       value: '/some/really/long/path',
+      pattern: '/{domain:es.wikipedia.org}/v1/some/really/long/path',
       params: {
         domain: 'es.wikipedia.org'
       }
@@ -222,12 +234,14 @@ describe('Set of lookups', function() {
 
     '/en.wikipedia.org/v1/several': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org'
       }
     },
     '/en.wikipedia.org/v1/several/optional': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional'
@@ -235,6 +249,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -243,6 +258,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path/segments': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -252,6 +268,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path/segments/a': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -261,6 +278,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path/segments/a/b': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -270,6 +288,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path/a%2fb': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -279,6 +298,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/several/optional/path/segments/a%2fb': {
       value: '/several{/optional}{/path}{+segments}',
+      pattern: '/{domain:en.wikipedia.org}/v1/several{/optional}{/path}{+segments}',
       params: {
         domain: 'en.wikipedia.org',
         '/optional': 'optional',
@@ -288,6 +308,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/simple/templated': {
       value: '/simple/{templated}{/path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/simple/{templated}{/path}',
       params: {
         domain: 'en.wikipedia.org',
         templated: 'templated'
@@ -295,6 +316,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/simple/templated/path': {
       value: '/simple/{templated}{/path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/simple/{templated}{/path}',
       params: {
         domain: 'en.wikipedia.org',
         templated: 'templated',
@@ -307,13 +329,15 @@ describe('Set of lookups', function() {
     '/en.wikipedia.org/v1/optional': null,
 
     '/en.wikipedia.org/v1/optional/': {
+      value: '/optional/{+path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/optional/{+path}',
       params: {
         domain: 'en.wikipedia.org',
-      },
-      value: '/optional/{+path}'
+      }
     },
     '/en.wikipedia.org/v1/optional/path': {
       value: '/optional/{+path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/optional/{+path}',
       params: {
         domain: 'en.wikipedia.org',
         '+path': 'path'
@@ -321,6 +345,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/optional/path/': {
       value: '/optional/{+path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/optional/{+path}',
       params: {
         domain: 'en.wikipedia.org',
         '+path': 'path',
@@ -328,6 +353,7 @@ describe('Set of lookups', function() {
     },
     '/en.wikipedia.org/v1/optional/path/bits': {
       value: '/optional/{+path}',
+      pattern: '/{domain:en.wikipedia.org}/v1/optional/{+path}',
       params: {
         domain: 'en.wikipedia.org',
         '+path': 'path/bits'
@@ -338,12 +364,14 @@ describe('Set of lookups', function() {
 
     '/en.wikipedia.org/v1/overlapping/concrete': {
       value: '/overlapping/concrete',
+      pattern: '/{domain:en.wikipedia.org}/v1/overlapping/concrete',
       params: {
         domain: 'en.wikipedia.org',
       }
     },
     '/en.wikipedia.org/v1/overlapping/other': {
       value: '/overlapping/{wildcard}',
+      pattern: '/{domain:en.wikipedia.org}/v1/overlapping/{wildcard}',
       params: {
         domain: 'en.wikipedia.org',
         wildcard: 'other',

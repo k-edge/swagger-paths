@@ -165,14 +165,14 @@ class Paths {
     Object.keys(paths).forEach((pathPattern) => {
       const path = parsePath(pathPattern, true);
       if (path.length == 0) throw new Error('Invalid empty path');
-      this._extend(path, _root, paths[pathPattern]);
+      this._extend(path, _root, paths[pathPattern], pathPattern);
     });
   }
 
   /* XXX modules: variant that builds a prefix tree from a path array,
    * but pass in a spec instead of a value
    */
-  _buildTree(path, value) {
+  _buildTree(path, value, pattern) {
     const node = new Node();
     if (path.length) {
       const segment = path[0];
@@ -180,19 +180,23 @@ class Paths {
         /* Set up a recursive match and end the traversal */
         const recursionNode = new Node();
         recursionNode.value = value;
+        recursionNode.pattern = pattern;
         recursionNode.setChild(segment, recursionNode);
         node.setChild(segment, recursionNode);
       } else {
-        const subTree = this._buildTree(path.slice(1), value);
+        const subTree = this._buildTree(path.slice(1), value, pattern);
         node.setChild(segment, subTree);
         if (segment.modifier === '/') {
           /* Set the value for each optional path segment ({/foo}) */
           node.value = value;
           subTree.value = value;
+          node.pattern = pattern;
+          subTree.pattern = pattern;
         }
       }
     } else {
       node.value = value;
+      node.pattern = pattern;
     }
     return node;
   }
@@ -200,13 +204,13 @@ class Paths {
   /* Extend an existing route tree with a new path by walking the existing
    * tree and inserting new subtrees at the desired location.
    */
-  _extend(path, node, value) {
+  _extend(path, node, value, pattern) {
     const params = {};
     for (let i = 0; i < path.length; i++) {
       const nextNode = node.getChild(path[i], params, true);
       if (!nextNode || !nextNode.getChild) {
         /* Found our extension point */
-        node.setChild(path[i], this._buildTree(path.slice(i + 1), value));
+        node.setChild(path[i], this._buildTree(path.slice(i + 1), value, pattern));
         return;
       } else {
         node = nextNode;
@@ -230,7 +234,8 @@ class Paths {
     if (node || prevNode && path[path.length - 1] === '') {
       return {
         params,
-        value: (node && node.value || null)
+        value: (node && node.value || null),
+        pattern: (node && node.pattern || null)
       };
     } else {
       return null;
@@ -246,7 +251,7 @@ class Paths {
 
     path = parsePath(path);
     const result = this._lookup(path, this._root);
-    if (result && result.value) return { params: result.params, value: result.value };
+    if (result && result.value) return { params: result.params, value: result.value, pattern: result.pattern };
     return null;
   }
 }

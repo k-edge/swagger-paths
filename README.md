@@ -23,8 +23,21 @@ const paths = new Paths({
   '/foo/{bar}': 'something else'
 });
 
-paths.lookup('/'); // returns { params: {}, value: 'the root entry' }
-paths.lookup('/foo/baz'); // returns { params: { bar: 'baz' }, value: 'something else' }
+paths.lookup('/');
+// returns
+//   {
+//     params: {},
+//     pattern: '/',
+//     value: 'the root entry'
+//   }
+
+paths.lookup('/foo/baz');
+// returns
+//   {
+//     params: { bar: 'baz' },
+//     pattern: '/foo/{bar}',
+//     value: 'something else'
+//   }
 ```
 
 Paths Format
@@ -43,9 +56,24 @@ For example, in case of normal parameters (e.g. `/foo/{bar}`):
 ```javascript
 const paths = new Paths({ '/foo/{bar}': '...' })
 
-paths.lookup('/foo');     // returns null
-paths.lookup('/foo/');    // returns { params: {}, value: '...' }
-paths.lookup('/foo/baz'); // returns { params: { bar: 'baz' }, value: '...' }
+paths.lookup('/foo');
+// returns null
+
+paths.lookup('/foo/');
+// returns
+//   {
+//     params: {},
+//     pattern: '/foo/{bar}',
+//     value: '...'
+//   }
+
+paths.lookup('/foo/baz');
+// returns
+//   {
+//     params: { bar: 'baz' },
+//     pattern: '/foo/{bar}',
+//     value: '...'
+//   }
 ```
 
 Using optional parameters (e.g. `/foo{/bar}`):
@@ -53,9 +81,29 @@ Using optional parameters (e.g. `/foo{/bar}`):
 ```javascript
 const paths = new Paths({ '/foo{/bar}': '...' })
 
-paths.lookup('/foo');     // returns { params: {}, value: '...' } as below
-paths.lookup('/foo/');    // returns { params: {}, value: '...' } as above
-paths.lookup('/foo/baz'); // returns { params: { '/bar': 'baz' }, value: '...' }
+paths.lookup('/foo');
+// as below returns
+//   {
+//     params: {},
+//     pattern: '/foo{/bar}',
+//     value: '...'
+//   }
+
+paths.lookup('/foo/');
+// as above returns
+//   {
+//     params: {},
+//     pattern: '/foo{/bar}',
+//     value: '...'
+//   }
+
+paths.lookup('/foo/baz');
+// returns
+//   {
+//     params: { '/bar': 'baz' },
+//     pattern: '/foo{/bar}',
+//     value: '...'
+//   }
 ```
 
 Wildcard parameters, on the other hand, capture all sub resources:
@@ -65,10 +113,32 @@ const Paths = require('.');
 
 const paths = new Paths({ '/foo/{+bar}': '...' })
 
-paths.lookup('/foo');         // returns null
-paths.lookup('/foo/');        // returns { params: {}, value: '...' } as above
-paths.lookup('/foo/baz');     // returns { params: { '+bar': 'baz' }, value: '...' }
-paths.lookup('/foo/baz/qux'); // returns { params: { '+bar: 'baz/qux' }, value: '...' }
+paths.lookup('/foo');
+// returns null
+
+paths.lookup('/foo/');
+// as above returns
+//   {
+//     params: {},
+//     pattern: '/foo/{+bar}',
+//     value: '...'
+//   }
+
+paths.lookup('/foo/baz');
+// returns
+//   {
+//     params: { '+bar': 'baz' },
+//     pattern: '/foo/{+bar}',
+//     value: '...'
+//   }
+
+paths.lookup('/foo/baz/qux');
+// returns
+//   {
+//     params: { '+bar: 'baz/qux' },
+//     pattern: '/foo/{+bar}',
+//     value: '...'
+//   }
 ```
 
 Fixed-value parameters, finally, capture a single, specific value as a path
@@ -80,9 +150,24 @@ const Paths = require('.');
 const paths = new Paths({ '/{foo:one}/{bar}': 111,
                           '/{foo:two}/{bar}': 222 });
 
-paths.lookup('/one/baz');     // returns { params: { foo: 'one', bar: 'baz' }, value: 111 }
-paths.lookup('/two/baz');     // returns { params: { foo: 'two', bar: 'baz' }, value: 222 }
-paths.lookup('/three/baz');   // returns null
+paths.lookup('/one/baz');
+// returns
+//   {
+//     params: { foo: 'one', bar: 'baz' },
+//     pattern: '/{foo:one}/{bar}',
+//     value: 111
+//   }
+
+paths.lookup('/two/baz');
+// returns
+//   {
+//     params: { foo: 'two', bar: 'baz' },
+//     pattern: '/{foo:two}/{bar}',
+//     value: 222
+//   }
+
+paths.lookup('/three/baz');
+// returns null
 ```
 
 #### NOTE on Parameter Names
