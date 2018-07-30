@@ -162,7 +162,7 @@ class Paths {
     if (typeof paths !== 'object') throw new Error('Parameter should be an object');
 
     const _root = this._root = new Node();
-    Object.keys(paths).forEach((pathPattern) => {
+    Object.keys(paths).sort().forEach((pathPattern) => {
       const path = parsePath(pathPattern, true);
       if (path.length == 0) throw new Error('Invalid empty path');
       this._extend(path, _root, paths[pathPattern], pathPattern);

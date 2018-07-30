@@ -88,6 +88,30 @@ describe('Extended tests', function() {
   });
 });
 
+describe('Sorting tests', function() {
+
+  /* Sorted in a wrong order */
+  let paths = new Paths({
+    '/x/{p}' : 'two',
+    '/x/y'   : 'three',
+    '/x'     : 'one',
+  });
+
+  const expectations = {
+    '/x'   : { params: {},         value: 'one',   pattern: '/x'     },
+    '/x/'  : { params: {},         value: 'two',   pattern: '/x/{p}' },
+    '/x/y' : { params: {},         value: 'three', pattern: '/x/y'   },
+    '/x/1' : { params: { p: '1' }, value: 'two',   pattern: '/x/{p}' }
+  };
+
+  Object.keys(expectations).forEach(function(key) {
+    var val = expectations[key];
+    it(`should match "${key}"`, function() {
+      deepEqual(paths.lookup(key), val);
+    });
+  });
+});
+
 describe('Set of lookups', function() {
 
   /* Paths to test against */
