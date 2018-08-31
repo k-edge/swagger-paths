@@ -94,12 +94,11 @@ describe('List test', () => {
 
     expect(list.match('/zzz/www')).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
     expect(list.match('/zzz/www/')).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
-    expect(list.match([ 'zzz', 'www'])).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
+    expect(list.match([ 'zzz', 'www' ])).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
 
     expect(list.match('/zzz/www/yyy')).to.be.null
     expect(list.match('/zzz/www/yyy')).to.be.null
     expect(list.match([ 'zzz', 'www', 'yyy' ])).to.be.null
-
   })
 
   it('should fail when normalising paths in strict mode', () => {
