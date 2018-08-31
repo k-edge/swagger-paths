@@ -41,4 +41,10 @@ describe('Component negative tests', () => {
     expect(() => new Component('{x^x}')).to.throw('Wrong variable name "x^x"')
     expect(() => new Component('{1xx}')).to.throw('Wrong variable name "1xx"')
   })
+
+  it('should not match with a non-string input', () => {
+    expect(new Component('foo').match(123)).to.equal(false)
+    expect(new Component('{foo}').match(123)).to.equal(false)
+    expect(new Component('foo{bar}baz').match(123)).to.equal(false)
+  })
 })

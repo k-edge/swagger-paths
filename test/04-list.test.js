@@ -78,18 +78,28 @@ describe('List test', () => {
     })
 
     expect(list.match('/')).to.eql({ variables: {}, path: list.paths[0], value: { key: 'one' } })
+    expect(list.match([ ])).to.eql({ variables: {}, path: list.paths[0], value: { key: 'one' } })
 
     expect(list.match('/abc')).to.eql({ variables: {}, path: list.paths[1], value: { key: 'two' } })
     expect(list.match('/abc/')).to.eql({ variables: {}, path: list.paths[1], value: { key: 'two' } })
+    expect(list.match([ 'abc' ])).to.eql({ variables: {}, path: list.paths[1], value: { key: 'two' } })
 
     expect(list.match('/abc/xxx')).to.eql({ variables: { bar: 'xxx' }, path: list.paths[2], value: { key: 'three' } })
     expect(list.match('/abc/xxx/')).to.eql({ variables: { bar: 'xxx' }, path: list.paths[2], value: { key: 'three' } })
+    expect(list.match([ 'abc', 'xxx' ])).to.eql({ variables: { bar: 'xxx' }, path: list.paths[2], value: { key: 'three' } })
 
     expect(list.match('/yyy')).to.eql({ variables: { foo: 'yyy' }, path: list.paths[3], value: { key: 'four' } })
     expect(list.match('/yyy/')).to.eql({ variables: { foo: 'yyy' }, path: list.paths[3], value: { key: 'four' } })
+    expect(list.match([ 'yyy' ])).to.eql({ variables: { foo: 'yyy' }, path: list.paths[3], value: { key: 'four' } })
 
     expect(list.match('/zzz/www')).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
     expect(list.match('/zzz/www/')).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
+    expect(list.match([ 'zzz', 'www'])).to.eql({ variables: { baz: 'zzz', xyz: 'www' }, path: list.paths[4], value: { key: 'five' } })
+
+    expect(list.match('/zzz/www/yyy')).to.be.null
+    expect(list.match('/zzz/www/yyy')).to.be.null
+    expect(list.match([ 'zzz', 'www', 'yyy' ])).to.be.null
+
   })
 
   it('should fail when normalising paths in strict mode', () => {
