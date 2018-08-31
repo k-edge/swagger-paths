@@ -7,7 +7,9 @@
     "test": "mocha 'test/**/*.test.js' || false",
     "lint": "eslint --cache '.eslintrc.js' '**/*js'",
     "lintfix": "eslint --cache '.eslintrc.js' '**/*js' --fix",
-    "build": "npm run lint && npm run test"
+    "coverage": "nyc --reporter=text npm run test",
+    "coverage-reports": "nyc --reporter=html npm run test",
+    "build": "npm run lint && npm run coverage"
   },
   "author": {
     "name": "Pier Fumagalli",
@@ -26,6 +28,15 @@
     "chai": "^4.1.2",
     "eslint": "^5.3.0",
     "eslint-config-google": "^0.9.1",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "nyc": "^13.0.1"
+  },
+  "nyc": {
+    "watermarks": {
+      "lines": [95, 99],
+      "functions": [95, 99],
+      "branches": [95, 99],
+      "statements": [95, 99]
+    }
   }
 }
