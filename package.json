@@ -1,6 +1,6 @@
 {
   "name": "swagger-paths",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Match paths from a swagger file",
   "main": "index.js",
   "scripts": {
@@ -30,13 +30,5 @@
     "eslint-config-google": "^0.9.1",
     "mocha": "^5.2.0",
     "nyc": "^13.0.1"
-  },
-  "nyc": {
-    "watermarks": {
-      "lines": [ 95, 99 ],
-      "functions": [ 95, 99 ],
-      "branches": [ 95, 99 ],
-      "statements": [ 95, 99 ]
-    }
   }
 }
