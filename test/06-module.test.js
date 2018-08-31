@@ -2,6 +2,8 @@
 
 const expect = require('chai').expect
 const List = require('../lib/list')
+const Path = require('../lib/path')
+const split = require('../lib/split')
 
 describe('Module test', () => {
   it('should expose a valid constructor for the module', () => {
@@ -11,10 +13,8 @@ describe('Module test', () => {
     let idx = require('../index.js')
     expect(idx).to.be.a('function')
 
-    let paths = idx([ '/' ])
-    expect(paths).to.be.instanceof(List)
-
-    expect(paths.paths.length).to.equal(1)
-    expect(paths.paths[0].path).to.equal('/')
+    expect(idx).to.equal(List)
+    expect(idx.Path).to.equal(Path)
+    expect(idx.splitPath).to.equal(split)
   })
 })
