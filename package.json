@@ -1,6 +1,6 @@
 {
   "name": "swagger-paths",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Match paths from a swagger file",
   "main": "index.js",
   "scripts": {

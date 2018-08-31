@@ -119,4 +119,10 @@ describe('Path splitting function', () => {
     expect(split('/a^c//d私f//', false)).to.eql([ 'a^c', 'd私f' ])
     expect(split('//a^c//d私f//', false)).to.eql([ 'a^c', 'd私f' ])
   })
+
+  it('should not split non-strings', () => {
+    expect(() => split()).to.throw(TypeError, 'Path must be a string')
+    expect(() => split(123)).to.throw(TypeError, 'Path must be a string')
+    expect(() => split(true)).to.throw(TypeError, 'Path must be a string')
+  })
 })
