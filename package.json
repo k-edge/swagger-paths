@@ -1,6 +1,6 @@
 {
   "name": "swagger-paths",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Match paths from a swagger file",
   "main": "index.js",
   "scripts": {
@@ -26,9 +26,12 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-google": "^0.13.0",
-    "mocha": "^6.1.4",
-    "nyc": "^14.1.1"
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://connyun.jfrog.io/connyun/api/npm/npm-local/"
   }
 }
