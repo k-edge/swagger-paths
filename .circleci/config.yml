@@ -19,6 +19,7 @@ jobs:
     steps:
       - checkout
       - <<: *restore_cache
+      - run: echo $NPM_AUTH >> .npmrc
       - run: npm install
       - save_cache:
           paths:
@@ -27,6 +28,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
+            - .npmrc
             - node_modules
 
   test:
@@ -64,4 +66,4 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              ignore: /.*/
+              only: master
