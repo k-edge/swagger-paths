@@ -1,5 +1,5 @@
 {
-  "name": "swagger-paths",
+  "name": "@koerber-internal/swagger-paths",
   "version": "1.0.6",
   "description": "Match paths from a swagger file",
   "main": "index.js",
