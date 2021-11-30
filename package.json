@@ -1,6 +1,6 @@
 {
-  "name": "@koerber-internal/swagger-paths",
-  "version": "1.0.6",
+  "name": "@k-edge/swagger-paths",
+  "version": "1.0.7",
   "description": "Match paths from a swagger file",
   "main": "index.js",
   "scripts": {
@@ -15,13 +15,13 @@
     "name": "Pier Fumagalli",
     "email": "pier.fumagalli@koerber.digital"
   },
-  "homepage": "https://github.com/KoerberDigitalDevTeam/swagger-paths#readme",
+  "homepage": "https://github.com/k-edge/swagger-paths#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KoerberDigitalDevTeam/swagger-paths.git"
+    "url": "git+https://github.com/k-edge/swagger-paths.git"
   },
   "bugs": {
-    "url": "https://github.com/KoerberDigitalDevTeam/swagger-paths/issues"
+    "url": "https://github.com/k-edge/swagger-paths/issues"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -30,8 +30,5 @@
     "eslint-config-google": "^0.14.0",
     "mocha": "^7.0.0",
     "nyc": "^15.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://connyun.jfrog.io/connyun/api/npm/npm-local/"
   }
 }
